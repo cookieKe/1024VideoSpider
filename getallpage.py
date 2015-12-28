@@ -6,29 +6,7 @@ import re
 import threading
 import os
 import time
-
-'''
-
-url = 'http://t66y.com/htm_data/2/1512/1744885.html'
-ua_index = random.randint(0,3)%4
-print ua_index
-request = urllib2.Request(url,headers={'user-agent':ua[ua_index]})
-
-cookie = cookielib.MozillaCookieJar()
-handler=urllib2.HTTPCookieProcessor(cookie)
-opener = urllib2.build_opener(handler)
-
-response = opener.open(request)
-cookie.save(ignore_discard=True, ignore_expires=True)
-content = response.read()
-request.close()
-
-'''
-
-ua = ['Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)',\
-		'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.2; WOW64; Trident/7.0; .NET4.0E; .NET4.0C; .NET CLR 3.5.30729; .NET CLR 2.0.50727; .NET CLR 3.0.30729; InfoPath.3; GWX:QUALIFIED)',\
-		'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko',\
-		'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0']
+import randomUA
 
 class Spider1024(threading.Thread):
 	def __init__(self,baseurl,store_path):
@@ -39,7 +17,7 @@ class Spider1024(threading.Thread):
 	def get_content(self,url,pattern):
 		try:
 			page_url = self.url
-			request = urllib2.Request(url,headers={'user-agent':ua[random.randint(0,3)]})
+			request = urllib2.Request(url,headers={'user-agent':randomUA.random_ua()})
 			response = urllib2.urlopen(request)
 			content = response.read()
 			res = pattern.findall(content)
@@ -62,7 +40,7 @@ class Spider1024(threading.Thread):
 			download_pattern = re.compile('<a target="_blank" .*?rmdown.*?>(.*?)</a>')
 			download_url = self.get_content(page_url,download_pattern)
 			if download_url != []:	
-				download_url_list.append(download_url)
+				download_url_list.append(download_url[0])
 			time.sleep(1)
 		try:
 			file=open(self.store_path,'w')
@@ -70,7 +48,7 @@ class Spider1024(threading.Thread):
 				file.write(item+'\n')
 			file.close()
 		except Exception as e:
-			print('Error '+str(e)+'!')
+			print('Run Error '+str(e)+'!')
 
 
 if __name__ == '__main__':
@@ -89,12 +67,12 @@ if __name__ == '__main__':
 	#从每一页获取需要的链接
 	for i in range(1,int(page_count)+1):
 		link_url = 'http://t66y.com/thread0806.php?fid=2&search=&page='+str(i)
-		spider_list.add(Spider1024(link_url,store_path))
+		spider_list.append(Spider1024(link_url,store_path))
 	for spider in spider_list:
 		try:
 			spider.run()
 		except:
-			spider_list.add(spider)
+			spider_list.append(spider)
 		time.sleep(2)
 
 	for spider in spider_list:
