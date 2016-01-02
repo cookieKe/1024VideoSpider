@@ -6,6 +6,7 @@ import time
 import cookielib
 import socket
 
+#不同的UA对应了不同的boundary
 UA_Boundary = {'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.73 Safari/537.36':'----WebKitFormBoundary',\
 				'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko':'-------------------------',\
 				'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:43.0) Gecko/20100101 Firefox/43.0':'---------------------------'}
@@ -25,7 +26,7 @@ def rand(flag):
 	return text;
 
 def post_request(rmdownloadurl,random_ua):
-	request2 = urllib2.Request(url = 'http://www.rmdown.com/download.php')#,data = data)
+	request2 = urllib2.Request(url = 'http://www.rmdown.com/download.php')
 	request2.add_header('User-Agent','Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.73 Safari/537.36')
 	request2.add_header('Connection','keep-alive')
 	request2.add_header('Accept','text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
