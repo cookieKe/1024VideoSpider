@@ -19,5 +19,14 @@ def query_url():
 	for item in urls:
 		print item
 
+@manager.command
+def update():
+	Url_Link.objects(name = 'hello').update(link = 'http://www.163.com')
+
+@manager.command
+def delete():
+	Url_Link.objects(name = 'delete').delete()
+
+
 if __name__ == '__main__':
 	manager.run()
