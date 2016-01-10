@@ -10,7 +10,7 @@ manager.add_command("runserver",Server(host = '127.0.0.1',port = 5000, use_debug
 
 @manager.command
 def save_url():
-	url = Url_Link(name = 'hello',link='http://www.baidu.com')
+	url = Url_Link(name = 'delete',link='http://www.baidu.com')
 	url.save()
 
 @manager.command
@@ -26,7 +26,6 @@ def update():
 @manager.command
 def delete():
 	Url_Link.objects(name = 'delete').delete()
-
 
 if __name__ == '__main__':
 	manager.run()
